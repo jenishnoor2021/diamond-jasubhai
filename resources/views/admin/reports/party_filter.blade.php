@@ -109,6 +109,9 @@ use App\Models\Process;
         $dimondsForParty = count($dimonds) > 0 ? $dimonds->where('parties_id', $partyList->id) : [];
         @endphp
         @if(count($dimondsForParty)> 0)
+        <div>
+          Total Weight = <?= $dimonds->where('parties_id', $partyList->id)->sum('weight'); ?>
+        </div>
         <div class="table-responsive">
           <table id="exportTable" class="table align-items-center table-flush table-borderless partyFTable">
             <thead>
@@ -135,11 +138,16 @@ use App\Models\Process;
             <tbody>
               @foreach($dimondsForParty as $index =>$dimond)
               <?php
+              $processes = Process::where(['dimonds_barcode' => $dimond->barcode_number, 'dimonds_id' => $dimond->id])->get();
               $getprocess = Process::where(['dimonds_barcode' => $dimond->barcode_number, 'dimonds_id' => $dimond->id, 'designation' => 'Grading'])->whereNotNull('return_weight')->first();
               $pw = $getprocess ? $getprocess->return_weight : ($dimond->status == 'Delivered' ? 0 : '-');
               ?>
               <tr>
-                <td><a href="{{route('admin.dimond.show', $dimond->barcode_number)}}"><i class="fa fa-eye" style="color:white;font-size:15px;background-color:rgba(255, 255, 255, 0.25);padding:8px;"></i></a></td>
+                <td>
+                  <a href="javascript:void(0);" id="view_{{$index}}" onclick="toggleView({{ $index }})">
+                    <i class="fa fa-arrow-down" style="color:white;font-size:15px;background-color:rgba(255, 255, 255, 0.25);padding:8px;"></i>
+                  </a>
+                </td>
                 <td>{{$dimond->parties->party_code}}</td>
                 <td>{{$dimond->dimond_name}}</td>
                 <td>{{$dimond->weight}}</td>
@@ -156,6 +164,36 @@ use App\Models\Process;
                 <td>{{ \Carbon\Carbon::parse($dimond->created_at)->format('d-m-Y') }}</td>
                 <!-- <td>{{ \Carbon\Carbon::parse($dimond->updated_at)->format('d-m-Y') }}</td> -->
                 <td>{{ \Carbon\Carbon::parse($dimond->delevery_date)->format('d-m-Y') }}</td>
+              </tr>
+              <tr id="show_{{ $index }}" style="display: none;">
+                <td colspan="16">
+                  <table class="table table-bordered mb-0 partyFTable">
+                    <thead>
+                      <tr>
+                        <th>Designation</th>
+                        <th>Worker</th>
+                        <th>Issue Date</th>
+                        <th>Return Date</th>
+                        <th>Issue Weight</th>
+                        <th>Return Weight</th>
+                        <th>Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($processes as $process)
+                      <tr>
+                        <td>{{ $process->designation }}</td>
+                        <td>{{ $process->worker_name }}</td>
+                        <td>{{ \Carbon\Carbon::parse($process->issue_date)->format('d-m-Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($process->return_date)->format('d-m-Y') }}</td>
+                        <td>{{ $process->issue_weight }}</td>
+                        <td>{{ $process->return_weight }}</td>
+                        <td>{{ $process->price }}</td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </td>
               </tr>
               @endforeach
             </tbody>
@@ -201,5 +239,15 @@ use App\Models\Process;
       ]
     });
   });
+</script>
+<script>
+  function toggleView(index) {
+    var row = document.getElementById('show_' + index);
+    if (row.style.display === 'none') {
+      row.style.display = 'block';
+    } else {
+      row.style.display = 'none';
+    }
+  }
 </script>
 @endsection
