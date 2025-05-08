@@ -144,8 +144,8 @@ use App\Models\Process;
               ?>
               <tr>
                 <td>
-                  <a href="javascript:void(0);" id="view_{{$index}}" onclick="toggleView({{ $index }})">
-                    <i class="fa fa-arrow-down" style="color:white;font-size:15px;background-color:rgba(255, 255, 255, 0.25);padding:8px;"></i>
+                  <a href="javascript:void(0);" onclick="viewProcesses({{ $dimond->id }}, '{{ $dimond->barcode_number }}')">
+                    <i class="fa fa-eye" style="color:white;font-size:15px;background-color:rgba(255, 255, 255, 0.25);padding:8px;"></i>
                   </a>
                 </td>
                 <td>{{$dimond->parties->party_code}}</td>
@@ -165,36 +165,6 @@ use App\Models\Process;
                 <!-- <td>{{ \Carbon\Carbon::parse($dimond->updated_at)->format('d-m-Y') }}</td> -->
                 <td>{{ \Carbon\Carbon::parse($dimond->delevery_date)->format('d-m-Y') }}</td>
               </tr>
-              <tr id="show_{{ $index }}" style="display: none;">
-                <td colspan="16">
-                  <table class="table table-bordered mb-0 partyFTable">
-                    <thead>
-                      <tr>
-                        <th>Designation</th>
-                        <th>Worker</th>
-                        <th>Issue Date</th>
-                        <th>Return Date</th>
-                        <th>Issue Weight</th>
-                        <th>Return Weight</th>
-                        <th>Price</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @foreach($processes as $process)
-                      <tr>
-                        <td>{{ $process->designation }}</td>
-                        <td>{{ $process->worker_name }}</td>
-                        <td>{{ \Carbon\Carbon::parse($process->issue_date)->format('d-m-Y') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($process->return_date)->format('d-m-Y') }}</td>
-                        <td>{{ $process->issue_weight }}</td>
-                        <td>{{ $process->return_weight }}</td>
-                        <td>{{ $process->price }}</td>
-                      </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
               @endforeach
             </tbody>
           </table>
@@ -213,6 +183,20 @@ use App\Models\Process;
   </div>
 </div><!--End Row-->
 
+<div class="modal fade" id="processModal" tabindex="-1" aria-labelledby="processModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style="color:#000;">Process Details</h5>
+        <button type="button" class="btn bg-none" data-bs-dismiss="modal" aria-label="Close">X</button>
+      </div>
+      <div class="modal-body" id="processModalBody" style="overflow-x:scroll">
+        <!-- AJAX content loads here -->
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('script')
@@ -223,31 +207,45 @@ use App\Models\Process;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <script>
   $(document).ready(function() {
-    $(".partyFTable").DataTable({
-      dom: 'Blfrtip',
-      buttons: [{
-          extend: 'pdf',
-        },
-        {
-          extend: 'csv',
-        },
-        {
-          extend: 'excel',
-        }
-      ]
+    $(".partyFTable").each(function() {
+      $(this).DataTable({
+        dom: 'Blfrtip',
+        buttons: [{
+            extend: 'pdf'
+          },
+          {
+            extend: 'csv'
+          },
+          {
+            extend: 'excel'
+          }
+        ]
+      });
     });
   });
 </script>
 <script>
-  function toggleView(index) {
-    var row = document.getElementById('show_' + index);
-    if (row.style.display === 'none') {
-      row.style.display = 'block';
-    } else {
-      row.style.display = 'none';
-    }
+  function viewProcesses(dimondId, barcode) {
+    $.ajax({
+      url: '/get-process-details', // define this route in your web.php
+      method: 'POST',
+      data: {
+        dimond_id: dimondId,
+        barcode_number: barcode,
+        _token: '{{ csrf_token() }}'
+      },
+      success: function(response) {
+        $('#processModalBody').html(response);
+        $('#processModal').modal('show');
+      },
+      error: function() {
+        alert('Failed to load process details.');
+      }
+    });
   }
 </script>
 @endsection

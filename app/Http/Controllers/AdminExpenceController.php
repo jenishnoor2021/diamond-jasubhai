@@ -1090,4 +1090,17 @@ class AdminExpenceController extends Controller
 
         // return $pdf->download('barcodes-list.pdf');
     }
+
+    public function getProcessDetails(Request $request)
+    {
+        $dimondId = $request->input('dimond_id');
+        $barcode = $request->input('barcode_number');
+
+        $processes = Process::where([
+            'dimonds_barcode' => $barcode,
+            'dimonds_id' => $dimondId
+        ])->get();
+
+        return view('partials.process_details_modal', compact('processes'))->render();
+    }
 }
