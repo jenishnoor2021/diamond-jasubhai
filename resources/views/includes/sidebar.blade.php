@@ -99,6 +99,11 @@
           <span>ADD Dimond list</span>
         </a>
       </li>
+      <li class="pt-2 pb-2 {{ (request()->segment(2) == 'party_get_process_diamond') ? 'active' : '' }}">
+        <a href="/admin/party_get_process_diamond">
+          <span>Party delivered diamond</span>
+        </a>
+      </li>
     </ul>
   </li>
 

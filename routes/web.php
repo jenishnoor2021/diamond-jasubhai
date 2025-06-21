@@ -143,6 +143,8 @@ Route::group(['middleware' => ['auth', 'usersession']], function () {
     Route::post('admin/party-bill-excel', [AdminExpenceController::class, 'partyBillExcel'])->name('party.bill.excel');
     Route::get('admin/party-filter', [AdminExpenceController::class, 'partyFilter'])->name('party.filter');
 
+    Route::get('admin/party_get_process_diamond', [AdminExpenceController::class, 'partyGetProcessDiamond'])->name('party.get.process');
+
     Route::get('admin/summary', [AdminExpenceController::class, 'summary'])->name('admin.summary');
     Route::get('admin/summary-export', [AdminExpenceController::class, 'summaryExport'])->name('admin.summary.export');
 

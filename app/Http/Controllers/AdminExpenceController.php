@@ -664,6 +664,54 @@ class AdminExpenceController extends Controller
         return view('admin.reports.party_filter', compact('partyLists', 'dimonds'));
     }
 
+    public function partyGetProcessDiamond(Request $request)
+    {
+        $partyLists = Party::where('is_active', 1)->get();
+        $designationLists = Designation::get();
+
+        $partyId = $request->input('party_id');
+        // $status = $request->input('status');
+        $applyDateOn = $request->input('apply_date_on');
+        $designation = $request->input('designation');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        $dimondsQuery = Dimond::query();
+        if (isset($partyId) && $partyId != 'All') {
+            $dimondsQuery->where('parties_id', $partyId);
+        }
+
+        // if (!empty($status)) {
+        //     $dimondsQuery->whereIn('status', $status);
+        // }
+        $dateColumn = 'created_at';
+        if (!empty($applyDateOn)) {
+            $dimondsQuery->where('status', $applyDateOn);
+            if ($applyDateOn === 'Delivered') {
+                $dateColumn = 'delevery_date';
+            }
+        }
+
+        if (isset($startDate)) {
+            $dimondsQuery->whereDate($dateColumn, '>=', $startDate);
+        }
+
+        if (isset($endDate)) {
+            $dimondsQuery->whereDate($dateColumn, '<=', $endDate);
+        }
+
+        if (!empty($designation)) {
+            // Assumes you have a relation `processes()` in Dimond model
+            $dimondsQuery->whereHas('processes', function ($q) use ($designation) {
+                $q->where('designation', $designation);
+            });
+        }
+
+        $dimonds = $partyId ? $dimondsQuery->get() : [];
+
+        return view('admin.reports.party_get_process_diamond', compact('partyLists', 'dimonds', 'designationLists'));
+    }
+
     public function repair(Request $request, $id)
     {
         // $check_exist = Repair::where('dimonds_id', $id)->get();
