@@ -63,7 +63,7 @@
             <tr>
               @foreach($designations as $designation)
               <td>
-                @if($designation->name != 'Grading')
+                @if($designation->name != 'Grading' && $designation->name != 'HPHT')
                 <a href="{{route('admin.designation.edit', $designation->id)}}"><i class="fa fa-edit" style="color:white;font-size:15px;background-color:#0275d8;padding:8px;border-radius:500px;"></i></a>
                 <a href="{{route('admin.designation.destroy', $designation->id)}}" onclick="return confirm('Sure ! You want to delete ?');"><i class="fa fa-trash" style="color:white;font-size:15px;background-color:red;padding:8px;border-radius:500px;"></i></a>
                 @endif

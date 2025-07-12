@@ -124,6 +124,7 @@ use App\Models\Process;
                 <th>Final Process Weight</th>
                 <th>Barcode</th>
                 <th>Status</th>
+                <th>HPHT</th>
                 <th>Shap</th>
                 <th>clarity</th>
                 <th>color</th>
@@ -138,9 +139,13 @@ use App\Models\Process;
             <tbody>
               @foreach($dimondsForParty as $index =>$dimond)
               <?php
-              $processes = Process::where(['dimonds_barcode' => $dimond->barcode_number, 'dimonds_id' => $dimond->id])->get();
+              // $processes = Process::where(['dimonds_barcode' => $dimond->barcode_number, 'dimonds_id' => $dimond->id])->get();
               $getprocess = Process::where(['dimonds_barcode' => $dimond->barcode_number, 'dimonds_id' => $dimond->id, 'designation' => 'Grading'])->whereNotNull('return_weight')->first();
               $pw = $getprocess ? $getprocess->return_weight : ($dimond->status == 'Delivered' ? 0 : '-');
+              $goingHPHT = Process::where([
+                'designation' => 'HPHT',
+                'dimonds_id' => $dimond->id
+              ])->exists() ? 'YES' : 'NO';
               ?>
               <tr>
                 <td>
@@ -155,6 +160,7 @@ use App\Models\Process;
                 <td>{{$pw}}</td>
                 <td>{!! $dimond->barcode_number !!}</td>
                 <td>{!! $dimond->status !!}</td>
+                <td>{{$goingHPHT}}</td>
                 <td>{{$dimond->shape}}</td>
                 <td>{{$dimond->clarity}}</td>
                 <td>{{$dimond->color}}</td>

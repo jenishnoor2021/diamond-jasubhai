@@ -98,7 +98,7 @@ class AdminProcessController extends Controller
         $diffrence = $i_weight - $r_weight;
         $weight = $i_weight;
         $designation = Designation::where('name', $process->designation)->first();
-        if ($designation->rate_apply_on == 'return_weight') {
+        if ($designation->rate_apply_on == 'return_weight' || $designation->rate_apply_on == 'ready_to_ruff_weight') {
             $weight = $r_weight;
         }
         if ($designation->rate_apply_on == 'diff_weight') {
@@ -174,6 +174,11 @@ class AdminProcessController extends Controller
                     $previousdata = Process::where(['id' => $previousId])->first();
                 }
 
+                if ($designation->rate_apply_on == 'ready_to_ruff_weight') {
+                    $getFirstProcess = Process::where('dimonds_id', $process->dimonds_id)->where('designation', $process->designation)->first();
+                    $weight = $getFirstProcess->issue_weight;
+                }
+
                 if ($rate_cut == 1) {
                     $request['price'] = 0;
                     Process::where(['dimonds_barcode' => $process->dimonds_barcode, 'worker_name' => $process->worker_name])->update(['ratecut' => 1]);
@@ -184,9 +189,13 @@ class AdminProcessController extends Controller
                         $request['price'] = $weight * ($get_rate);
                     } else {
                         if (!empty($previousdata) && $previousdata->price == 0 && $previousdata->ratecut == 1) {
-                            $request['price'] = $i_weight * ($get_rate->value);
+                            $request['price'] = $weight * ($get_rate);
                         } else {
-                            $request['price'] = 0;
+                            if ($designation->rate_apply_on == 'diff_weight') {
+                                $request['price'] = $weight * ($get_rate);
+                            } else {
+                                $request['price'] = 0;
+                            }
                         }
                     }
                 }
@@ -217,29 +226,32 @@ class AdminProcessController extends Controller
 
             $partyrate = Party::where('id', $dimonds->parties_id)->first();
 
+            // $takenWeight = $dimonds->weight; // old condition
+            $takenWeight = $r_weight;
+
             if ($dimonds->shape == 'Round') {
-                if ($dimonds->weight < 3)
+                if ($takenWeight < 3)
                     $get_party_rate = !empty($partyrate->round_1) && $partyrate->round_1 != '' ? $partyrate->round_1 : 0;
-                else if ($dimonds->weight >= 3 && $dimonds->weight < 10)
+                else if ($takenWeight >= 3 && $takenWeight < 10)
                     $get_party_rate = !empty($partyrate->round_2) && $partyrate->round_2 != '' ? $partyrate->round_2 : 0;
                 else
                     $get_party_rate = !empty($partyrate->round_3) && $partyrate->round_3 != '' ? $partyrate->round_3 : 0;
             }
 
             if ($dimonds->shape != 'Round') {
-                if ($dimonds->weight < 0.99)
+                if ($takenWeight < 0.99)
                     $get_party_rate = !empty($partyrate->fancy_1) && $partyrate->fancy_1 != '' ? $partyrate->fancy_1 : 0;
-                else if ($dimonds->weight >= 1 && $dimonds->weight < 1.5)
+                else if ($takenWeight >= 1 && $takenWeight < 1.5)
                     $get_party_rate = !empty($partyrate->fancy_2) && $partyrate->fancy_2 != '' ? $partyrate->fancy_2 : 0;
-                else if ($dimonds->weight >= 1.5 && $dimonds->weight < 2)
+                else if ($takenWeight >= 1.5 && $takenWeight < 2)
                     $get_party_rate = !empty($partyrate->fancy_3) && $partyrate->fancy_3 != '' ? $partyrate->fancy_3 : 0;
-                else if ($dimonds->weight >= 2 && $dimonds->weight < 3)
+                else if ($takenWeight >= 2 && $takenWeight < 3)
                     $get_party_rate = !empty($partyrate->fancy_4) && $partyrate->fancy_4 != '' ? $partyrate->fancy_4 : 0;
-                else if ($dimonds->weight >= 3 && $dimonds->weight < 4)
+                else if ($takenWeight >= 3 && $takenWeight < 4)
                     $get_party_rate = !empty($partyrate->fancy_5) && $partyrate->fancy_5 != '' ? $partyrate->fancy_5 : 0;
-                else if ($dimonds->weight >= 4 && $dimonds->weight < 5)
+                else if ($takenWeight >= 4 && $takenWeight < 5)
                     $get_party_rate = !empty($partyrate->fancy_6) && $partyrate->fancy_6 != '' ? $partyrate->fancy_6 : 0;
-                else if ($dimonds->weight >= 5 && $dimonds->weight < 9)
+                else if ($takenWeight >= 5 && $takenWeight < 9)
                     $get_party_rate = !empty($partyrate->fancy_7) && $partyrate->fancy_7 != '' ? $partyrate->fancy_7 : 0;
                 else
                     $get_party_rate = !empty($partyrate->fancy_8) && $partyrate->fancy_8 != '' ? $partyrate->fancy_8 : 0;

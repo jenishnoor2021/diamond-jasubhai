@@ -44,6 +44,7 @@
                         <option value="issue_weight" {{ $designation->rate_apply_on == 'issue_weight' ? 'selected' : '' }}>Issue weight</option>
                         <option value="return_weight" {{ $designation->rate_apply_on == 'return_weight' ? 'selected' : '' }}>Return weight</option>
                         <option value="diff_weight" {{ $designation->rate_apply_on == 'diff_weight' ? 'selected' : '' }}>Diffrence weight</option>
+                        <option value="ready_to_ruff_weight" {{ $designation->rate_apply_on == 'ready_to_ruff_weight' ? 'selected' : '' }}>Ready To Ruff</option>
                      </select>
                      @if($errors->has('rate_apply_on'))
                      <div class="error text-danger">{{ $errors->first('rate_apply_on') }}</div>

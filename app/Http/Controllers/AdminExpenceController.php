@@ -19,7 +19,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 // use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Response;
-use PhpOffice\PhpSpreadsheet\Writer\Csv;
+// use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class AdminExpenceController extends Controller
@@ -491,6 +492,136 @@ class AdminExpenceController extends Controller
         return $pdf->download('generate-' . $party->fname . '-report.pdf');
     }
 
+    // Download CSV
+    // public function partyBillExcel(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'party_id' => 'required',
+    //         'end_date' => 'required',
+    //         'start_date' => 'required',
+    //         'add_gst' => 'required',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return Redirect::back()->withInput($request->all())->withErrors($validator);
+    //     }
+
+    //     $partyId = $request->input('party_id');
+    //     $startDate = $request->input('start_date');
+    //     $endDate = $request->input('end_date');
+    //     $getGst = $request->input('add_gst');
+
+    //     $party = Party::where('id', $partyId)->first();
+    //     $data = Dimond::where(['parties_id' => $partyId, 'status' => 'Delivered'])->whereDate('delevery_date', '>=', $startDate)->whereDate('delevery_date', '<=', $endDate)->get();
+
+    //     $spreadsheet = new Spreadsheet();
+
+    //     // Get the active sheet
+    //     $sheet = $spreadsheet->getActiveSheet();
+
+    //     $title = 'HR DIAMONDS';
+    //     $titleCell = 'A1:M1';
+    //     $sheet->setCellValue('A1', $title);
+    //     $sheet->mergeCells($titleCell);
+    //     $style = [
+    //         'font' => ['bold' => true],
+    //         'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER]
+    //     ];
+    //     $sheet->getStyle($titleCell)->applyFromArray($style);
+
+    //     // Add data to the sheet (example data)
+    //     $sheet->setCellValue('A2', 'Sr.');
+    //     $sheet->setCellValue('B2', 'Stone Id');
+    //     $sheet->setCellValue('C2', 'RW');
+    //     $sheet->setCellValue('D2', 'PW');
+    //     $sheet->setCellValue('E2', 'SHP');
+    //     $sheet->setCellValue('F2', 'CL');
+    //     $sheet->setCellValue('G2', 'PRT');
+    //     $sheet->setCellValue('H2', 'CUT');
+    //     $sheet->setCellValue('I2', 'PL');
+    //     $sheet->setCellValue('J2', 'STN');
+    //     $sheet->setCellValue('K2', 'GIW');
+    //     $sheet->setCellValue('L2', 'Amount');
+    //     $sheet->setCellValue('M2', 'Created');
+
+    //     $excelData = [];
+
+    //     $sum = $sgst = $cgst = 0;
+    //     foreach ($data as $key => $da) {
+    //         $process = Process::where(['designation' => 'Grading', 'dimonds_id' => $da->id])->first();
+    //         $ghishiIssue = Process::where([
+    //             'designation' => 'GHISHI',
+    //             'dimonds_id' => $da->id
+    //         ])->first();
+    //         $gIssueWeight = $ghishiIssue ? $ghishiIssue->issue_weight : '-';
+    //         // Populate your data here
+    //         $excelData[] = [
+    //             $key + 1,
+    //             $da->dimond_name,
+    //             $da->weight,
+    //             isset($process->return_weight) ? $process->return_weight : '',
+    //             isset($da->shape) ? $da->shape : '',
+    //             isset($process->r_clarity) ? $process->r_clarity : '',
+    //             isset($process->r_color) ? $process->r_color : '',
+    //             isset($process->r_cut) ? $process->r_cut : '',
+    //             isset($process->r_polish) ? $process->r_polish : '',
+    //             isset($process->r_symmetry) ? $process->r_symmetry : '',
+    //             $gIssueWeight,
+    //             $da->amount,
+    //             $da->created_at,
+    //         ];
+    //         $sum += $da->amount;
+    //     }
+
+    //     $excelData[] = ['', '', '', '', '', '', '', '', '', '', 'Total =', $sum, ''];
+    //     if ($getGst == 'gst') {
+    //         $sgst = ($sum * 1.5) / 100;
+    //         $cgst = ($sum * 1.5) / 100;
+    //         $excelData[] = ['', '', '', '', '', '', '', '', '', '', 'SGST (1.5 %) =', $sgst, ''];
+    //         $excelData[] = ['', '', '', '', '', '', '', '', '', '', 'CGST (1.5 %) =', $cgst, ''];
+    //     } else {
+    //     }
+    //     $excelData[] = ['', '', '', '', '', '', '', '', '', '', 'Final Amount =', $sum + $sgst + $cgst, ''];
+
+    //     $rowIndex = 3;
+    //     // Add data rows
+    //     foreach ($excelData as $row) {
+    //         $columnIndex = 1;
+    //         foreach ($row as $value) {
+    //             $sheet->setCellValueByColumnAndRow($columnIndex, $rowIndex, $value);
+    //             $columnIndex++;
+    //         }
+    //         $rowIndex++;
+    //     }
+
+    //     $writer = new Csv($spreadsheet);
+
+    //     if (ob_get_length()) {
+    //         ob_clean();
+    //     }
+
+    //     ob_start(); // Start clean output
+
+    //     // Set headers before output
+    //     header('Content-Type: text/csv');
+    //     header('Content-Disposition: attachment; filename="party_bill.csv"');
+    //     header('Cache-Control: max-age=0');
+
+    //     // Write the file directly to output
+    //     $writer->save('php://output');
+    //     exit;
+
+    //     // $writer = new Csv($spreadsheet);
+
+    //     // $headers = [
+    //     //     'Content-Type' => 'text/csv',
+    //     //     'Content-Disposition' => 'attachment; filename="example.csv"',
+    //     // ];
+
+    //     // return new Response($writer->save('php://output'), 200, $headers);
+    // }
+
+    // Download Xlsx
     public function partyBillExcel(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -518,7 +649,7 @@ class AdminExpenceController extends Controller
         $sheet = $spreadsheet->getActiveSheet();
 
         $title = 'HR DIAMONDS';
-        $titleCell = 'A1:L1';
+        $titleCell = 'A1:M1';
         $sheet->setCellValue('A1', $title);
         $sheet->mergeCells($titleCell);
         $style = [
@@ -527,84 +658,119 @@ class AdminExpenceController extends Controller
         ];
         $sheet->getStyle($titleCell)->applyFromArray($style);
 
-        // Add data to the sheet (example data)
-        $sheet->setCellValue('A2', 'Sr.');
-        $sheet->setCellValue('B2', 'Stone Id');
-        $sheet->setCellValue('C2', 'RW');
-        $sheet->setCellValue('D2', 'PW');
-        $sheet->setCellValue('E2', 'SHP');
-        $sheet->setCellValue('F2', 'CL');
-        $sheet->setCellValue('G2', 'PRT');
-        $sheet->setCellValue('H2', 'CUT');
-        $sheet->setCellValue('I2', 'PL');
-        $sheet->setCellValue('J2', 'STN');
-        $sheet->setCellValue('K2', 'Amount');
-        $sheet->setCellValue('L2', 'Created');
+        $sheet->fromArray([
+            'Sr.',
+            'Stone Id',
+            'RW',
+            'PW',
+            'SHP',
+            'CL',
+            'PRT',
+            'CUT',
+            'PL',
+            'STN',
+            'GIW',
+            'Amount',
+            'Created'
+        ], null, 'A2');
 
         $excelData = [];
 
         $sum = $sgst = $cgst = 0;
+        $rowIndex = 3;
         foreach ($data as $key => $da) {
             $process = Process::where(['designation' => 'Grading', 'dimonds_id' => $da->id])->first();
-            // Populate your data here
-            $excelData[] = [
+            $ghishiIssue = Process::where([
+                'designation' => 'GHISHI',
+                'dimonds_id' => $da->id
+            ])->first();
+            $gIssueWeight = $ghishiIssue ? $ghishiIssue->issue_weight : '-';
+
+            $sheet->fromArray([
                 $key + 1,
                 $da->dimond_name,
                 $da->weight,
-                isset($process->return_weight) ? $process->return_weight : '',
-                isset($da->shape) ? $da->shape : '',
-                isset($process->r_clarity) ? $process->r_clarity : '',
-                isset($process->r_color) ? $process->r_color : '',
-                isset($process->r_cut) ? $process->r_cut : '',
-                isset($process->r_polish) ? $process->r_polish : '',
-                isset($process->r_symmetry) ? $process->r_symmetry : '',
+                $process->return_weight ?? '',
+                $da->shape ?? '',
+                $process->r_clarity ?? '',
+                $process->r_color ?? '',
+                $process->r_cut ?? '',
+                $process->r_polish ?? '',
+                $process->r_symmetry ?? '',
+                $gIssueWeight,
                 $da->amount,
                 $da->created_at,
-            ];
+            ], null, "A{$rowIndex}");
+
             $sum += $da->amount;
-        }
-
-        $excelData[] = ['', '', '', '', '', '', '', '', '', 'Total =', $sum, ''];
-        if ($getGst == 'gst') {
-            $sgst = ($sum * 1.5) / 100;
-            $cgst = ($sum * 1.5) / 100;
-            $excelData[] = ['', '', '', '', '', '', '', '', '', 'SGST (1.5 %) =', $sgst, ''];
-            $excelData[] = ['', '', '', '', '', '', '', '', '', 'CGST (1.5 %) =', $cgst, ''];
-        } else {
-        }
-        $excelData[] = ['', '', '', '', '', '', '', '', '', 'Final Amount =', $sum + $sgst + $cgst, ''];
-
-        $rowIndex = 3;
-        // Add data rows
-        foreach ($excelData as $row) {
-            $columnIndex = 1;
-            foreach ($row as $value) {
-                $sheet->setCellValueByColumnAndRow($columnIndex, $rowIndex, $value);
-                $columnIndex++;
-            }
             $rowIndex++;
         }
 
-        // Create a new CSV writer object
-        $writer = new Csv($spreadsheet);
+        // Totals Row
+        $sheet->mergeCells("A{$rowIndex}:K{$rowIndex}");
+        $sheet->setCellValue("A{$rowIndex}", 'Total ');
+        $sheet->setCellValue("L{$rowIndex}", $sum);
+        $sheet->getStyle("A{$rowIndex}:M{$rowIndex}")->applyFromArray([
+            'font' => ['bold' => true],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT
+            ],
+        ]);
+        $rowIndex++;
 
-        // Set the headers to force download the file
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="example.csv"',
-        ];
 
-        // Create the HTTP response and send the file to the client
-        return new Response($writer->save('php://output'), 200, $headers);
+        if ($getGst == 'gst') {
+            $sgst = ($sum * 1.5) / 100;
+            $cgst = ($sum * 1.5) / 100;
+
+            $sheet->mergeCells("A{$rowIndex}:K{$rowIndex}");
+            $sheet->setCellValue("A{$rowIndex}", 'SGST (1.5 %) ');
+            $sheet->setCellValue("L{$rowIndex}", $sgst);
+            $sheet->getStyle("A{$rowIndex}:M{$rowIndex}")->applyFromArray([
+                'font' => ['bold' => true],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT
+                ],
+            ]);
+            $rowIndex++;
+
+            $sheet->mergeCells("A{$rowIndex}:K{$rowIndex}");
+            $sheet->setCellValue("A{$rowIndex}", 'CGST (1.5 %) ');
+            $sheet->setCellValue("L{$rowIndex}", $cgst);
+            $sheet->getStyle("A{$rowIndex}:M{$rowIndex}")->applyFromArray([
+                'font' => ['bold' => true],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT
+                ],
+            ]);
+            $rowIndex++;
+        }
+
+        $sheet->mergeCells("A{$rowIndex}:K{$rowIndex}");
+        $sheet->setCellValue("A{$rowIndex}", 'Final Amount ');
+        $sheet->setCellValue("L{$rowIndex}", $sum + $sgst + $cgst);
+        $sheet->getStyle("A{$rowIndex}:M{$rowIndex}")->applyFromArray([
+            'font' => ['bold' => true],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT
+            ],
+        ]);
 
 
-        // below code is use for live server
-        // header('Content-Type: text/csv');
-        // header('Content-Disposition: attachment; filename="example.csv"');
-        // header('Cache-Control: max-age=0');
+        $writer = new Xlsx($spreadsheet);
 
-        // $writer->save('php://output');
-        // exit;
+        if (ob_get_length()) {
+            ob_clean();
+        }
+
+        ob_start(); // Start clean output
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="party_bill.xlsx"');
+
+        // Write the file directly to output
+        $writer->save('php://output');
+        exit;
     }
 
     public function partyFilter(Request $request)

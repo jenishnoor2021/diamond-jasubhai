@@ -158,10 +158,17 @@ use App\Models\Process;
     </center>
     <div class="row">
       <div class="column-left">
-
+        <h3><u>Party Details</u></h3>
+        <p><strong class="align-center title">Invoice No: # {{$party->id}}/2024</strong></p>
+        <p><strong class="align-center title">Name:</strong>&nbsp;{{$party->fname}}&nbsp;&nbsp;{{isset($party->lname)?$party->lname:''}}</p>
+        <p><strong class="align-center title">Address:</strong>&nbsp;{{isset($party->address)?$party->address:''}}</p>
+        <p><strong class="align-center title">Phone:</strong>&nbsp;{{isset($party->mobile)?$party->mobile:''}}</p>
+        <p><strong class="align-center title">GST No.:</strong>&nbsp;{{isset($party->gst_no)?$party->gst_no:''}}</p>
+        <p><strong class="align-center title">Bill Date: {{ \Carbon\Carbon::parse(Carbon::now())->format('d-m-Y H:i:s') }}</strong></p>
       </div>
       <div class="column-right">
         <div class="d-flex align-items-center justify-content-center">
+          <h3><u>Company Details</u></h3>
           <p><strong class="align-center title">GST No.:</strong> 24AIZPB0708M1Z2</p>
           <p><strong class="align-center title">PAN No.:</strong> AIZPB0708M</p>
           <p><strong class="align-center title">Phones :</strong> </p>
@@ -172,7 +179,7 @@ use App\Models\Process;
       <!-- Rest of your code ... -->
       <!-- Content for the center and table -->
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="column-left">
         <h3><u>Party Details</u></h3>
         <p><strong class="align-center title">Invoice No: # {{$party->id}}/2024</strong></p>
@@ -186,7 +193,7 @@ use App\Models\Process;
 
       </div>
       <div style="clear: both;"></div>
-    </div>
+    </div> -->
     <br />
     <table>
       <thead>
@@ -201,7 +208,8 @@ use App\Models\Process;
           <th>CUT</th>
           <th>PL</th>
           <th>STN</th>
-          <th width="20%">Amount</th>
+          <th>GIW</th>
+          <th width="10%">Amount</th>
           <th width="10%">Created At</th>
         </tr>
       </thead>
@@ -212,6 +220,11 @@ use App\Models\Process;
         @foreach($data as $key=>$da)
         <?php
         $process = Process::where(['designation' => 'Grading', 'dimonds_id' => $da->id])->first();
+        $ghishiIssue = Process::where([
+          'designation' => 'GHISHI',
+          'dimonds_id' => $da->id
+        ])->first();
+        $gIssueWeight = $ghishiIssue ? $ghishiIssue->issue_weight : '-';
         ?>
         <tr>
           <td>{{$key+1}}</td>
@@ -224,6 +237,7 @@ use App\Models\Process;
           <td>{{isset($process->r_cut) ?$process->r_cut: ''}}</td>
           <td>{{isset($process->r_polish) ?$process->r_polish: ''}}</td>
           <td>{{isset($process->r_symmetry) ?$process->r_symmetry: ''}}</td>
+          <td>{{$gIssueWeight}}</td>
           <td>{{$da->amount}}</td>
           <td>{{\Carbon\Carbon::parse($da->created_at)->format('d-m-Y')}}</td>
           @php
@@ -232,7 +246,7 @@ use App\Models\Process;
         </tr>
         @endforeach
         <tr>
-          <td align="right" colspan="10">
+          <td align="right" colspan="11">
             <b>
               <h4>Total Amount</h4>
             </b>
@@ -247,7 +261,7 @@ use App\Models\Process;
         </tr>
         @if($getGst == 'gst')
         <tr>
-          <td align="right" colspan="10">
+          <td align="right" colspan="11">
             <b>
               <h4>SGST (1.5 %)</h4>
             </b>
@@ -262,7 +276,7 @@ use App\Models\Process;
           </td>
         </tr>
         <tr>
-          <td align="right" colspan="10">
+          <td align="right" colspan="11">
             <b>
               <h4>CGST (1.5 %)</h4>
             </b>
@@ -277,7 +291,7 @@ use App\Models\Process;
           </td>
         </tr>
         <tr>
-          <td align="right" colspan="10">
+          <td align="right" colspan="11">
             <b>
               <h4>Final Amount</h4>
             </b>
