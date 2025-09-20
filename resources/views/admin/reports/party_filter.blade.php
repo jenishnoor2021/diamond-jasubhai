@@ -122,18 +122,19 @@ use App\Models\Process;
                 <th>Row Weight</th>
                 <th>Polished Weight</th>
                 <th>Final Process Weight</th>
+                <th>HPHT</th>
+                <th>HPHT Return Date</th>
+                <th>Created</th>
+                <!-- <th>Last Modified</th> -->
+                <th>Deliverd</th>
                 <th>Barcode</th>
                 <th>Status</th>
-                <th>HPHT</th>
                 <th>Shap</th>
                 <th>clarity</th>
                 <th>color</th>
                 <th>cut</th>
                 <th>polish</th>
                 <th>symmetry</th>
-                <th>Created</th>
-                <!-- <th>Last Modified</th> -->
-                <th>Deliverd</th>
               </tr>
             </thead>
             <tbody>
@@ -145,7 +146,10 @@ use App\Models\Process;
               $goingHPHT = Process::where([
                 'designation' => 'HPHT',
                 'dimonds_id' => $dimond->id
-              ])->exists() ? 'YES' : 'NO';
+              ])->first();
+
+              $hphtStatus = $goingHPHT ? 'YES' : 'NO';
+              $hphtReturnDate = $goingHPHT ? \Carbon\Carbon::parse($goingHPHT->return_date)->format('d-m-Y') : '-';
               ?>
               <tr>
                 <td>
@@ -158,18 +162,19 @@ use App\Models\Process;
                 <td>{{$dimond->weight}}</td>
                 <td>{{$dimond->required_weight}}</td>
                 <td>{{$pw}}</td>
+                <td>{{ $hphtStatus }}</td>
+                <td>{{ $hphtReturnDate }}</td>
+                <td>{{ \Carbon\Carbon::parse($dimond->created_at)->format('d-m-Y') }}</td>
+                <!-- <td>{{ \Carbon\Carbon::parse($dimond->updated_at)->format('d-m-Y') }}</td> -->
+                <td>{{ \Carbon\Carbon::parse($dimond->delevery_date)->format('d-m-Y') }}</td>
                 <td>{!! $dimond->barcode_number !!}</td>
                 <td>{!! $dimond->status !!}</td>
-                <td>{{$goingHPHT}}</td>
                 <td>{{$dimond->shape}}</td>
                 <td>{{$dimond->clarity}}</td>
                 <td>{{$dimond->color}}</td>
                 <td>{{$dimond->cut}}</td>
                 <td>{{$dimond->polish}}</td>
                 <td>{{$dimond->symmetry}}</td>
-                <td>{{ \Carbon\Carbon::parse($dimond->created_at)->format('d-m-Y') }}</td>
-                <!-- <td>{{ \Carbon\Carbon::parse($dimond->updated_at)->format('d-m-Y') }}</td> -->
-                <td>{{ \Carbon\Carbon::parse($dimond->delevery_date)->format('d-m-Y') }}</td>
               </tr>
               @endforeach
             </tbody>
