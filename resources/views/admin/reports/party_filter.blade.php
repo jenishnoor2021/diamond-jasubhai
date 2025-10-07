@@ -121,7 +121,6 @@ use App\Models\Process;
                 <th>Dimond Name</th>
                 <th>Row Weight</th>
                 <th>Polished Weight</th>
-                <th>Final Process Weight</th>
                 <th>HPHT</th>
                 <th>HPHT Return Date</th>
                 <th>Created</th>
@@ -135,6 +134,7 @@ use App\Models\Process;
                 <th>cut</th>
                 <th>polish</th>
                 <th>symmetry</th>
+                <th>Final Process Weight</th>
               </tr>
             </thead>
             <tbody>
@@ -161,7 +161,6 @@ use App\Models\Process;
                 <td>{{$dimond->dimond_name}}</td>
                 <td>{{$dimond->weight}}</td>
                 <td>{{$dimond->required_weight}}</td>
-                <td>{{$pw}}</td>
                 <td>{{ $hphtStatus }}</td>
                 <td>{{ $hphtReturnDate }}</td>
                 <td>{{ \Carbon\Carbon::parse($dimond->created_at)->format('d-m-Y') }}</td>
@@ -175,6 +174,7 @@ use App\Models\Process;
                 <td>{{$dimond->cut}}</td>
                 <td>{{$dimond->polish}}</td>
                 <td>{{$dimond->symmetry}}</td>
+                <td>{{$pw}}</td>
               </tr>
               @endforeach
             </tbody>

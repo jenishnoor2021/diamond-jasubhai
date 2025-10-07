@@ -127,7 +127,7 @@ use Carbon\Carbon;
                 <th>Dimond Name</th>
                 <th>Row Weight</th>
                 <th>Polished Weight</th>
-                <th>Final Process Weight</th>
+                <!-- <th>Final Process Weight</th> -->
                 <th>Barcode</th>
                 <th>Status</th>
                 <th>Shap</th>
@@ -153,7 +153,7 @@ use Carbon\Carbon;
                 <td>{{$dimond->dimond_name}}</td>
                 <td>{{$dimond->weight}}</td>
                 <td>{{$dimond->required_weight}}</td>
-                <td>1</td>
+                <!-- <td>1</td> -->
                 <td>{!! $dimond->barcode_number !!}</td>
                 <td>{!! $dimond->status !!}</td>
                 <td>{{$dimond->shape}}</td>
