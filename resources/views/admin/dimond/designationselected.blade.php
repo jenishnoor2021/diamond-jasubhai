@@ -53,10 +53,10 @@
               <td>
                 <a href="{{route('admin.dimond.show', $dimond->dimonds_barcode)}}"><i class="fa fa-eye" style="color:white;font-size:15px;background-color:rgba(255, 255, 255, 0.25);padding:8px;"></i></a>
               </td>
-              <td>{{$dimond->dimonds->dimond_name}}</td>
+              <td>{{$dimond->dimonds ? $dimond->dimonds->dimond_name : ''}}</td>
               <td>{{$dimond->dimonds_barcode}}</td>
               <td>{{ \Carbon\Carbon::parse($dimond->updated_at)->format('d-m-Y') }}</td>
-              <td>{{$dimond->dimonds->status}}</td>
+              <td>{{$dimond->dimonds ? $dimond->dimonds->status : ''}}</td>
             </tr>
             @endforeach
           </tbody>

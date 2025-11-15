@@ -243,28 +243,28 @@ class AdminExpenceController extends Controller
                 $categorydesignation = Designation::where('category', $category)->pluck('name')->toArray();
                 if ($designation != 'all') {
                     if ($worker_name != 'all') {
-                        $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name])->get();
+                        $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name, 'is_active' => 1])->get();
                         $data = Process::whereIn('dimonds_id', $getdeliverddimonds)->where(['designation' => $designation, 'worker_name' => $worker_name])->get();
                     } else {
-                        $worker_detail = Worker::where('designation', $designation)->get();
+                        $worker_detail = Worker::where('designation', $designation)->where('is_active', 1)->get();
                         $data = Process::whereIn('dimonds_id', $getdeliverddimonds)->where(['designation' => $designation])->get();
                     }
                 } else {
-                    $worker_detail = Worker::whereIn('designation', $categorydesignation)->get();
+                    $worker_detail = Worker::whereIn('designation', $categorydesignation)->where('is_active', 1)->get();
                     $data = Process::whereIn('dimonds_id', $getdeliverddimonds)->whereIn('designation', $categorydesignation)->get();
                 }
             } else {
                 if (isset($designation) && $designation != 'all') {
                     if ($worker_name != 'all') {
-                        $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name])->get();
+                        $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name, 'is_active' => 1])->get();
                         $data = Process::whereIn('dimonds_id', $getdeliverddimonds)->where(['designation' => $designation, 'worker_name' => $worker_name])->get();
                     } else {
-                        $worker_detail = Worker::where('designation', $designation)->get();
+                        $worker_detail = Worker::where('designation', $designation)->where('is_active', 1)->get();
                         $data = Process::whereIn('dimonds_id', $getdeliverddimonds)->where(['designation' => $designation])->get();
                     }
                 } else {
                     if (isset($startDate) && isset($endDate)) {
-                        $worker_detail = Worker::get();
+                        $worker_detail = Worker::where('is_active', 1)->get();
                         $data = Process::whereIn('dimonds_id', $getdeliverddimonds)->get();
                     }
                 }
@@ -317,28 +317,28 @@ class AdminExpenceController extends Controller
             $categorydesignation = Designation::where('category', $category)->pluck('name')->toArray();
             if ($designation != 'all') {
                 if ($worker_name != 'all') {
-                    $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name])->get();
+                    $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name, 'is_active' => 1])->get();
                     $data = Process::whereIn('dimonds_id', $getdeliverddimonds)->where(['designation' => $designation, 'worker_name' => $worker_name])->get();
                 } else {
-                    $worker_detail = Worker::where('designation', $designation)->get();
+                    $worker_detail = Worker::where('designation', $designation)->where('is_active', 1)->get();
                     $data = Process::whereIn('dimonds_id', $getdeliverddimonds)->where(['designation' => $designation])
                         ->get();
                 }
             } else {
-                $worker_detail = Worker::whereIn('designation', $categorydesignation)->get();
+                $worker_detail = Worker::whereIn('designation', $categorydesignation)->where('is_active', 1)->get();
                 $data = Process::whereIn('dimonds_id', $getdeliverddimonds)->whereIn('designation', $categorydesignation)->get();
             }
         } else {
             if ($designation != 'all') {
                 if ($worker_name != 'all') {
-                    $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name])->get();
+                    $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name, 'is_active' => 1])->get();
                     $data = Process::whereIn('dimonds_id', $getdeliverddimonds)->where(['designation' => $designation, 'worker_name' => $worker_name])->get();
                 } else {
-                    $worker_detail = Worker::where('designation', $designation)->get();
+                    $worker_detail = Worker::where('designation', $designation)->where('is_active', 1)->get();
                     $data = Process::whereIn('dimonds_id', $getdeliverddimonds)->where(['designation' => $designation])->get();
                 }
             } else {
-                $worker_detail = Worker::get();
+                $worker_detail = Worker::where('is_active', 1)->get();
                 $data = Process::whereIn('dimonds_id', $getdeliverddimonds)->get();
             }
         }
@@ -366,28 +366,28 @@ class AdminExpenceController extends Controller
                 $categorydesignation = Designation::where('category', $category)->pluck('name')->toArray();
                 if ($designation != 'all') {
                     if ($worker_name != 'all') {
-                        $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name])->get();
+                        $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name, 'is_active' => 1])->get();
                         $data = Process::whereDate('issue_date', '>=', $startDate)->whereDate('issue_date', '<=', $endDate)->whereNotNull('return_weight')->where(['designation' => $designation, 'worker_name' => $worker_name])->get();
                     } else {
-                        $worker_detail = Worker::where('designation', $designation)->get();
+                        $worker_detail = Worker::where('designation', $designation)->where('is_active', 1)->get();
                         $data = Process::whereDate('issue_date', '>=', $startDate)->whereDate('issue_date', '<=', $endDate)->whereNotNull('return_weight')->where(['designation' => $designation])->get();
                     }
                 } else {
-                    $worker_detail = Worker::whereIn('designation', $categorydesignation)->get();
+                    $worker_detail = Worker::whereIn('designation', $categorydesignation)->where('is_active', 1)->get();
                     $data = Process::whereDate('issue_date', '>=', $startDate)->whereDate('issue_date', '<=', $endDate)->whereNotNull('return_weight')->whereIn('designation', $categorydesignation)->get();
                 }
             } else {
                 if (isset($designation) && $designation != 'all') {
                     if ($worker_name != 'all') {
-                        $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name])->get();
+                        $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name, 'is_active' => 1])->get();
                         $data = Process::whereDate('issue_date', '>=', $startDate)->whereDate('issue_date', '<=', $endDate)->whereNotNull('return_weight')->where(['designation' => $designation, 'worker_name' => $worker_name])->get();
                     } else {
-                        $worker_detail = Worker::where('designation', $designation)->get();
+                        $worker_detail = Worker::where('designation', $designation)->where('is_active', 1)->get();
                         $data = Process::whereDate('issue_date', '>=', $startDate)->whereDate('issue_date', '<=', $endDate)->whereNotNull('return_weight')->where(['designation' => $designation])->get();
                     }
                 } else {
                     if (isset($startDate) && isset($endDate)) {
-                        $worker_detail = Worker::get();
+                        $worker_detail = Worker::where('is_active', 1)->get();
                         $data = Process::whereDate('issue_date', '>=', $startDate)->whereDate('issue_date', '<=', $endDate)->whereNotNull('return_weight')->get();
                     }
                 }
@@ -427,28 +427,28 @@ class AdminExpenceController extends Controller
                 $categorydesignation = Designation::where('category', $category)->pluck('name')->toArray();
                 if ($designation != 'all') {
                     if ($worker_name != 'all') {
-                        $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name])->get();
+                        $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name, 'is_active' => 1])->get();
                         $data = Process::whereDate('issue_date', '>=', $startDate)->whereDate('issue_date', '<=', $endDate)->whereNotNull('return_weight')->where(['designation' => $designation, 'worker_name' => $worker_name])->get();
                     } else {
-                        $worker_detail = Worker::where('designation', $designation)->get();
+                        $worker_detail = Worker::where('designation', $designation)->where('is_active', 1)->get();
                         $data = Process::whereDate('issue_date', '>=', $startDate)->whereDate('issue_date', '<=', $endDate)->whereNotNull('return_weight')->where(['designation' => $designation])->get();
                     }
                 } else {
-                    $worker_detail = Worker::whereIn('designation', $categorydesignation)->get();
+                    $worker_detail = Worker::whereIn('designation', $categorydesignation)->where('is_active', 1)->get();
                     $data = Process::whereDate('issue_date', '>=', $startDate)->whereDate('issue_date', '<=', $endDate)->whereNotNull('return_weight')->whereIn('designation', $categorydesignation)->get();
                 }
             } else {
                 if (isset($designation) && $designation != 'all') {
                     if ($worker_name != 'all') {
-                        $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name])->get();
+                        $worker_detail = Worker::where(['designation' => $designation, 'fname' => $worker_name, 'is_active' => 1])->get();
                         $data = Process::whereDate('issue_date', '>=', $startDate)->whereDate('issue_date', '<=', $endDate)->whereNotNull('return_weight')->where(['designation' => $designation, 'worker_name' => $worker_name])->get();
                     } else {
-                        $worker_detail = Worker::where('designation', $designation)->get();
+                        $worker_detail = Worker::where('designation', $designation)->where('is_active', 1)->get();
                         $data = Process::whereDate('issue_date', '>=', $startDate)->whereDate('issue_date', '<=', $endDate)->whereNotNull('return_weight')->where(['designation' => $designation])->get();
                     }
                 } else {
                     if (isset($startDate) && isset($endDate)) {
-                        $worker_detail = Worker::get();
+                        $worker_detail = Worker::where('is_active', 1)->get();
                         $data = Process::whereDate('issue_date', '>=', $startDate)->whereDate('issue_date', '<=', $endDate)->whereNotNull('return_weight')->get();
                     }
                 }
@@ -979,28 +979,28 @@ class AdminExpenceController extends Controller
             $categorydesignation = Designation::where('category', $category)->pluck('name')->toArray();
             if (isset($designation) && $designation != 'all') {
                 if (isset($worker_name) && $worker_name != 'all') {
-                    $workers = Worker::where(['designation' => $designation, 'fname' => $worker_name])->get();
+                    $workers = Worker::where(['designation' => $designation, 'fname' => $worker_name, 'is_active' => 1])->get();
                 } else {
-                    $workers = Worker::where('designation', $designation)->get();
+                    $workers = Worker::where('designation', $designation)->where('is_active', 1)->get();
                 }
             } else {
                 if (isset($worker_name) && $worker_name != 'all') {
-                    $workers = Worker::whereIn('designation', $categorydesignation)->where('fname', $worker_name)->get();
+                    $workers = Worker::whereIn('designation', $categorydesignation)->where('fname', $worker_name)->where('is_active', 1)->get();
                 } else {
-                    $workers = Worker::whereIn('designation', $categorydesignation)->get();
+                    $workers = Worker::whereIn('designation', $categorydesignation)->where('is_active', 1)->get();
                     return view('admin.reports.workersummaryAll', compact('workerLists', 'workers', 'designations'));
                 }
             }
         } else if (isset($category) && $category == 'all') {
             if (isset($designation) && $designation != 'all') {
                 if (isset($worker_name) && $worker_name != 'all') {
-                    $workers = Worker::where(['designation' => $designation, 'fname' => $worker_name])->get();
+                    $workers = Worker::where(['designation' => $designation, 'fname' => $worker_name, 'is_active' => 1])->get();
                 } else {
-                    $workers = Worker::where('designation', $designation)->get();
+                    $workers = Worker::where('designation', $designation)->where('is_active', 1)->get();
                 }
             } else {
                 if (isset($worker_name) && $worker_name != 'all') {
-                    $workers = Worker::where(['fname' => $worker_name])->get();
+                    $workers = Worker::where(['fname' => $worker_name, 'is_active' => 1])->get();
                 } else {
                     $workers = Worker::where('is_active', 1)->get();
                     return view('admin.reports.workersummaryAll', compact('workerLists', 'workers', 'designations'));
@@ -1049,29 +1049,29 @@ class AdminExpenceController extends Controller
             $categorydesignation = Designation::where('category', $category)->pluck('name')->toArray();
             if (isset($designation) && $designation != 'all') {
                 if (isset($worker_name) && $worker_name != 'all') {
-                    $workers = Worker::where(['designation' => $designation, 'fname' => $worker_name])->get();
+                    $workers = Worker::where(['designation' => $designation, 'fname' => $worker_name, 'is_active' => 1])->get();
                 } else {
-                    $workers = Worker::where('designation', $designation)->get();
+                    $workers = Worker::where('designation', $designation)->where('is_active', 1)->get();
                 }
             } else {
                 if (isset($worker_name) && $worker_name != 'all') {
-                    $workers = Worker::whereIn('designation', $categorydesignation)->where('fname', $worker_name)->get();
+                    $workers = Worker::whereIn('designation', $categorydesignation)->where('fname', $worker_name)->where('is_active', 1)->get();
                 }
                 if (isset($worker_name) && $worker_name == 'all') {
-                    $workers = Worker::whereIn('designation', $categorydesignation)->get();
+                    $workers = Worker::whereIn('designation', $categorydesignation)->where('is_active', 1)->get();
                     // return view('admin.reports.workersummaryAll', compact('workerLists', 'workers', 'designations'));
                 }
             }
         } else if (isset($category) && $category == 'all') {
             if (isset($designation) && $designation != 'all') {
                 if (isset($worker_name) && $worker_name != 'all') {
-                    $workers = Worker::where(['designation' => $designation, 'fname' => $worker_name])->get();
+                    $workers = Worker::where(['designation' => $designation, 'fname' => $worker_name, 'is_active' => 1])->get();
                 } else {
-                    $workers = Worker::where('designation', $designation)->get();
+                    $workers = Worker::where('designation', $designation)->where('is_active', 1)->get();
                 }
             } else {
                 if (isset($worker_name) && $worker_name != 'all') {
-                    $workers = Worker::where(['fname' => $worker_name])->get();
+                    $workers = Worker::where(['fname' => $worker_name, 'is_active' => 1])->get();
                 }
                 if (isset($worker_name) && $worker_name == 'all') {
                     $workers = Worker::where('is_active', 1)->get();
@@ -1090,7 +1090,7 @@ class AdminExpenceController extends Controller
     {
         $designations = Designation::where('category', 'Outter')->get();
         $designa = Designation::where('category', 'Outter')->pluck('name')->toArray();
-        $workerLists = Worker::whereIN('designation', $designa)->get();
+        $workerLists = Worker::whereIN('designation', $designa)->where('is_active', 1)->get();
         $workers = [];
 
         $designation = $request->input('designation');
@@ -1101,27 +1101,27 @@ class AdminExpenceController extends Controller
             $categorydesignation = Designation::where('category', $category)->pluck('name')->toArray();
             if (isset($designation) && $designation != 'all') {
                 if (isset($worker_name) && $worker_name != 'all') {
-                    $workers = Worker::where(['designation' => $designation, 'fname' => $worker_name])->get();
+                    $workers = Worker::where(['designation' => $designation, 'fname' => $worker_name, 'is_active' => 1])->get();
                 } else {
-                    $workers = Worker::where('designation', $designation)->get();
+                    $workers = Worker::where('designation', $designation)->where('is_active', 1)->get();
                 }
             } else {
                 if (isset($worker_name) && $worker_name != 'all') {
-                    $workers = Worker::whereIn('designation', $categorydesignation)->where('fname', $worker_name)->get();
+                    $workers = Worker::whereIn('designation', $categorydesignation)->where('fname', $worker_name)->where('is_active', 1)->get();
                 } else {
-                    $workers = Worker::whereIn('designation', $categorydesignation)->get();
+                    $workers = Worker::whereIn('designation', $categorydesignation)->where('is_active', 1)->get();
                 }
             }
         } else if (isset($category) && $category == 'all') {
             if (isset($designation) && $designation != 'all') {
                 if (isset($worker_name) && $worker_name != 'all') {
-                    $workers = Worker::where(['designation' => $designation, 'fname' => $worker_name])->get();
+                    $workers = Worker::where(['designation' => $designation, 'fname' => $worker_name, 'is_active' => 1])->get();
                 } else {
-                    $workers = Worker::where('designation', $designation)->get();
+                    $workers = Worker::where('designation', $designation)->where('is_active', 1)->get();
                 }
             } else {
                 if (isset($worker_name) && $worker_name != 'all') {
-                    $workers = Worker::where(['fname' => $worker_name])->get();
+                    $workers = Worker::where(['fname' => $worker_name])->where('is_active', 1)->get();
                 } else {
                     $workers = Worker::where('is_active', 1)->get();
                 }
