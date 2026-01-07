@@ -146,7 +146,7 @@ use App\Models\Process;
               $lastrecord = Process::where('dimonds_barcode', $da->dimonds_barcode)->where('worker_name', $worker->fname)->latest()->first();
               $lastReturnWeight = $lastrecord->return_weight;
 
-              if (isset($getdimond) && ($da->price != 0) && ($category == "Inner")) { ?>
+              if (isset($getdimond) && ($category == "Inner")) { ?>
                 <tr>
                   <td>{{$p}}</td>
                   <td>{{ $da->dimonds->dimond_name }}</td>
@@ -194,32 +194,30 @@ use App\Models\Process;
                   $p += 1;
                   @endphp
                 </tr>
-                <?php } else {
-                if ($da->price != 0) { ?>
-                  <tr>
-                    <td>{{$p}}</td>
-                    <td>{{ $da->dimonds->dimond_name }}</td>
-                    <td>{{ $da->dimonds_barcode }}</td>
-                    <td>{{ \Carbon\Carbon::parse($da->issue_date)->format('d-m-Y') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($da->return_date)->format('d-m-Y') }}</td>
-                    <td>{{ $getdimond->shape }}</td>
-                    <td>{{$getdimond->clarity}}</td>
-                    <td>{{$getdimond->color}}</td>
-                    <td>{{$getdimond->cut}}</td>
-                    <td>{{$getdimond->polish}}</td>
-                    <td>{{$getdimond->symmetry}}</td>
-                    <td>{{ $da->issue_weight }}</td>
-                    <td>{{ isset($lastReturnWeight) ? $lastReturnWeight : '' }}</td>
-                    <td>{{ $getdimond->required_weight }}</td>
-                    <td>{{ $da->price }}</td>
-                    <td>{{ \Carbon\Carbon::parse($getdimond->created_at)->format('d-m-Y')}}</td>
-                    <td>{{ \Carbon\Carbon::parse($getdimond->delevery_date)->format('d-m-Y') }}</td>
-                    @php
-                    $p += 1;
-                    @endphp
-                  </tr>
-              <?php }
-              } ?>
+              <?php } else { ?>
+                <tr>
+                  <td>{{$p}}</td>
+                  <td>{{ $da->dimonds->dimond_name }}</td>
+                  <td>{{ $da->dimonds_barcode }}</td>
+                  <td>{{ \Carbon\Carbon::parse($da->issue_date)->format('d-m-Y') }}</td>
+                  <td>{{ \Carbon\Carbon::parse($da->return_date)->format('d-m-Y') }}</td>
+                  <td>{{ $getdimond->shape }}</td>
+                  <td>{{$getdimond->clarity}}</td>
+                  <td>{{$getdimond->color}}</td>
+                  <td>{{$getdimond->cut}}</td>
+                  <td>{{$getdimond->polish}}</td>
+                  <td>{{$getdimond->symmetry}}</td>
+                  <td>{{ $da->issue_weight }}</td>
+                  <td>{{ isset($lastReturnWeight) ? $lastReturnWeight : '' }}</td>
+                  <td>{{ $getdimond->required_weight }}</td>
+                  <td>{{ $da->price }}</td>
+                  <td>{{ \Carbon\Carbon::parse($getdimond->created_at)->format('d-m-Y')}}</td>
+                  <td>{{ \Carbon\Carbon::parse($getdimond->delevery_date)->format('d-m-Y') }}</td>
+                  @php
+                  $p += 1;
+                  @endphp
+                </tr>
+              <?php } ?>
               @endif
               @endforeach
             </tbody>
