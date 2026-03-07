@@ -97,7 +97,7 @@ use App\Models\Process;
       <div>
 
         <div class="table-responsive">
-          <table id="" class="table align-items-center table-flush table-borderless">
+          <table id="workersummaryTable" class="table align-items-center table-flush table-borderless">
             <thead>
               <tr>
                 <th>Worker Name</th>

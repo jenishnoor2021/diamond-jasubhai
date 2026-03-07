@@ -101,7 +101,7 @@ use App\Models\Process;
           <h4 style="margin-top:20px">{{$worker->fname}}&nbsp;{{$worker->lname}}</h4>
         </center>
         <div class="table-responsive">
-          <table id="" class="table align-items-center table-flush table-borderless">
+          <table id="workersummaryTable" class="table align-items-center table-flush table-borderless">
             <thead>
               <tr>
                 <th>Show</th>

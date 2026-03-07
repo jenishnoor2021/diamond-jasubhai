@@ -160,7 +160,8 @@ use App\Models\Process;
                   <td>{{$getdimond->polish}}</td>
                   <td>{{$getdimond->symmetry}}</td>
                   <td>{{ $da->issue_weight }}</td>
-                  <td>{{ isset($lastReturnWeight) ? $lastReturnWeight : '' }}</td>
+                  <!-- <td>{{ isset($lastReturnWeight) ? $lastReturnWeight : '' }}</td> -->
+                  <td>{{ isset($rw) ? $rw : '' }}</td>
                   <td>{{ $getdimond->required_weight }}</td>
                   <td>{{ $da->price }}</td>
                   <td>{{ \Carbon\Carbon::parse($getdimond->created_at)->format('d-m-Y')}}</td>
@@ -185,7 +186,8 @@ use App\Models\Process;
                   <td>{{$getdimond->polish}}</td>
                   <td>{{$getdimond->symmetry}}</td>
                   <td>{{ $da->issue_weight }}</td>
-                  <td>{{ isset($lastReturnWeight) ? $lastReturnWeight : '' }}</td>
+                  <!-- <td>{{ isset($lastReturnWeight) ? $lastReturnWeight : '' }}</td> -->
+                  <td>{{ isset($rw) ? $rw : '' }}</td>
                   <td>{{ $getdimond->required_weight }}</td>
                   <td>{{ $da->price }}</td>
                   <td>{{ \Carbon\Carbon::parse($getdimond->created_at)->format('d-m-Y')}}</td>
@@ -209,6 +211,7 @@ use App\Models\Process;
                   <td>{{$getdimond->symmetry}}</td>
                   <td>{{ $da->issue_weight }}</td>
                   <td>{{ isset($lastReturnWeight) ? $lastReturnWeight : '' }}</td>
+                  <td>{{ isset($rw) ? $rw : '' }}</td>
                   <td>{{ $getdimond->required_weight }}</td>
                   <td>{{ $da->price }}</td>
                   <td>{{ \Carbon\Carbon::parse($getdimond->created_at)->format('d-m-Y')}}</td>
