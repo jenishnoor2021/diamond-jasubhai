@@ -18,6 +18,11 @@ class Dimond extends Model
         return $this->belongsTo(Party::class);
     }
 
+    public function process()
+    {
+        return $this->hasOne(Process::class, 'dimonds_id')->latest();
+    }
+
     public function processes()
     {
         return $this->hasMany(Process::class, 'dimonds_id');
