@@ -78,6 +78,8 @@
                         <option value="Asscher">Asscher</option>
                         <option value="Square">Square</option>
                         <option value="Marquise">Marquise</option>
+                        <option value="Dutch_Marquis">Dutch Marquis</option>
+                        <option value="Step_Marquis">Step Marquis</option>
                         <option value="Heart">Heart</option>
                         <option value="Trilliant">Trilliant</option>
                         <option value="Euro Cut">Euro Cut</option>

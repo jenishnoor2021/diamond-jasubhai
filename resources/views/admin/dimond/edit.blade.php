@@ -78,6 +78,8 @@
                         <option value="Asscher" {{$dimond->shape == 'Asscher' ? 'selected' : ''}}>Asscher</option>
                         <option value="Square" {{$dimond->shape == 'Square' ? 'selected' : ''}}>Square</option>
                         <option value="Marquise" {{$dimond->shape == 'Marquise' ? 'selected' : ''}}>Marquise</option>
+                        <option value="Dutch_Marquis" {{$dimond->shape == 'Dutch_Marquis' ? 'selected' : ''}}>Dutch Marquis</option>
+                        <option value="Step_Marquis" {{$dimond->shape == 'Step_Marquis' ? 'selected' : ''}}>Step Marquis</option>
                         <option value="Heart" {{$dimond->shape == 'Heart' ? 'selected' : ''}}>Heart</option>
                         <option value="Trilliant" {{$dimond->shape == 'Trilliant' ? 'selected' : ''}}>Trilliant</option>
                         <option value="Euro Cut" {{$dimond->shape == 'Euro Cut' ? 'selected' : ''}}>Euro Cut</option>

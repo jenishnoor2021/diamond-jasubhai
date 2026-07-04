@@ -699,7 +699,7 @@ class AdminExpenceController extends Controller
                 $process->r_symmetry ?? '',
                 $gIssueWeight,
                 $da->amount,
-                $da->created_at,
+                Carbon::parse($da->created_at)->format('d-m-Y H:i:s'),
             ], null, "A{$rowIndex}");
 
             $sum += $da->amount;
