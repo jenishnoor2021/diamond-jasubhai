@@ -649,7 +649,7 @@ class AdminExpenceController extends Controller
         $sheet = $spreadsheet->getActiveSheet();
 
         $title = 'HR DIAMONDS';
-        $titleCell = 'A1:M1';
+        $titleCell = 'A1:N1';
         $sheet->setCellValue('A1', $title);
         $sheet->mergeCells($titleCell);
         $style = [
@@ -671,6 +671,7 @@ class AdminExpenceController extends Controller
             'STN',
             'GIW',
             'Amount',
+            'Delivery',
             'Created'
         ], null, 'A2');
 
@@ -686,6 +687,10 @@ class AdminExpenceController extends Controller
             ])->first();
             $gIssueWeight = $ghishiIssue ? $ghishiIssue->issue_weight : '-';
 
+            $deliveryDate = !empty($da->delevery_date)
+                ? Carbon::parse($da->delevery_date)->format('d-m-Y')
+                : '-';
+
             $sheet->fromArray([
                 $key + 1,
                 $da->dimond_name,
@@ -699,6 +704,7 @@ class AdminExpenceController extends Controller
                 $process->r_symmetry ?? '',
                 $gIssueWeight,
                 $da->amount,
+                $deliveryDate,
                 Carbon::parse($da->created_at)->format('d-m-Y H:i:s'),
             ], null, "A{$rowIndex}");
 
@@ -710,7 +716,7 @@ class AdminExpenceController extends Controller
         $sheet->mergeCells("A{$rowIndex}:K{$rowIndex}");
         $sheet->setCellValue("A{$rowIndex}", 'Total ');
         $sheet->setCellValue("L{$rowIndex}", $sum);
-        $sheet->getStyle("A{$rowIndex}:M{$rowIndex}")->applyFromArray([
+        $sheet->getStyle("A{$rowIndex}:N{$rowIndex}")->applyFromArray([
             'font' => ['bold' => true],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT
@@ -726,7 +732,7 @@ class AdminExpenceController extends Controller
             $sheet->mergeCells("A{$rowIndex}:K{$rowIndex}");
             $sheet->setCellValue("A{$rowIndex}", 'SGST (1.5 %) ');
             $sheet->setCellValue("L{$rowIndex}", $sgst);
-            $sheet->getStyle("A{$rowIndex}:M{$rowIndex}")->applyFromArray([
+            $sheet->getStyle("A{$rowIndex}:N{$rowIndex}")->applyFromArray([
                 'font' => ['bold' => true],
                 'alignment' => [
                     'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT
@@ -737,7 +743,7 @@ class AdminExpenceController extends Controller
             $sheet->mergeCells("A{$rowIndex}:K{$rowIndex}");
             $sheet->setCellValue("A{$rowIndex}", 'CGST (1.5 %) ');
             $sheet->setCellValue("L{$rowIndex}", $cgst);
-            $sheet->getStyle("A{$rowIndex}:M{$rowIndex}")->applyFromArray([
+            $sheet->getStyle("A{$rowIndex}:N{$rowIndex}")->applyFromArray([
                 'font' => ['bold' => true],
                 'alignment' => [
                     'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT
@@ -749,7 +755,7 @@ class AdminExpenceController extends Controller
         $sheet->mergeCells("A{$rowIndex}:K{$rowIndex}");
         $sheet->setCellValue("A{$rowIndex}", 'Final Amount ');
         $sheet->setCellValue("L{$rowIndex}", $sum + $sgst + $cgst);
-        $sheet->getStyle("A{$rowIndex}:M{$rowIndex}")->applyFromArray([
+        $sheet->getStyle("A{$rowIndex}:N{$rowIndex}")->applyFromArray([
             'font' => ['bold' => true],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT

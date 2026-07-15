@@ -165,7 +165,7 @@ use App\Models\Process;
                 <td>{{ $hphtReturnDate }}</td>
                 <td>{{ \Carbon\Carbon::parse($dimond->created_at)->format('d-m-Y') }}</td>
                 <!-- <td>{{ \Carbon\Carbon::parse($dimond->updated_at)->format('d-m-Y') }}</td> -->
-                <td>{{ \Carbon\Carbon::parse($dimond->delevery_date)->format('d-m-Y') }}</td>
+                <td>{{ $dimond->delevery_date ? \Carbon\Carbon::parse($dimond->delevery_date)->format('d-m-Y') : '-' }}</td>
                 <td>{!! $dimond->barcode_number !!}</td>
                 <td>{!! $dimond->status !!}</td>
                 <td>{{$dimond->shape}}</td>

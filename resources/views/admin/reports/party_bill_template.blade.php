@@ -210,6 +210,7 @@ use App\Models\Process;
           <th>STN</th>
           <th>GIW</th>
           <th width="10%">Amount</th>
+          <th width="10%">Delivery</th>
           <th width="10%">Created At</th>
         </tr>
       </thead>
@@ -225,6 +226,9 @@ use App\Models\Process;
           'dimonds_id' => $da->id
         ])->first();
         $gIssueWeight = $ghishiIssue ? $ghishiIssue->issue_weight : '-';
+        $deliveryDate = !empty($da->delevery_date)
+          ? \Carbon\Carbon::parse($da->delevery_date)->format('d-m-Y')
+          : '-';
         ?>
         <tr>
           <td>{{$key+1}}</td>
@@ -239,6 +243,7 @@ use App\Models\Process;
           <td>{{isset($process->r_symmetry) ?$process->r_symmetry: ''}}</td>
           <td>{{$gIssueWeight}}</td>
           <td>{{$da->amount}}</td>
+          <td>{{$deliveryDate}}</td>
           <td>{{\Carbon\Carbon::parse($da->created_at)->format('d-m-Y')}}</td>
           @php
           $sum += ($da->amount);
@@ -256,8 +261,8 @@ use App\Models\Process;
               <h4>{{$sum}}</h4>
             </b>
           </td>
-          <td>
-          </td>
+          <td></td>
+          <td></td>
         </tr>
         @if($getGst == 'gst')
         <tr>
@@ -272,8 +277,8 @@ use App\Models\Process;
                   echo $sgst; ?></h4>
             </b>
           </td>
-          <td>
-          </td>
+          <td></td>
+          <td></td>
         </tr>
         <tr>
           <td align="right" colspan="11">
@@ -287,8 +292,8 @@ use App\Models\Process;
                   echo $cgst; ?></h4>
             </b>
           </td>
-          <td>
-          </td>
+          <td></td>
+          <td></td>
         </tr>
         <tr>
           <td align="right" colspan="11">
@@ -301,8 +306,8 @@ use App\Models\Process;
               <h4>{{$sum+$sgst+$cgst}}</h4>
             </b>
           </td>
-          <td>
-          </td>
+          <td></td>
+          <td></td>
         </tr>
         @endif
       </tbody>

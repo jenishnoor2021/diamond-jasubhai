@@ -126,18 +126,19 @@ use App\Models\Process;
                 <th>Sr.</th>
                 <th>Dimond Name</th>
                 <th>Dimond barcode</th>
+                <th>Party Name</th>
                 <th>Issues Date</th>
                 <th>Return Date</th>
+                <th>Issues Weight</th>
+                <th>Return Weight</th>
+                <th>Required Weight</th>
+                <th width="20%">Amount</th>
                 <th>Shape</th>
                 <th>clarity</th>
                 <th>color</th>
                 <th>cut</th>
                 <th>polish</th>
                 <th>symmetry</th>
-                <th>Issues Weight</th>
-                <th>Return Weight</th>
-                <th>Required Weight</th>
-                <th width="20%">Amount</th>
                 <th>Created date</th>
                 <th>Delivery date</th>
               </tr>
@@ -157,6 +158,9 @@ use App\Models\Process;
 
               // Get last return_weight
               $lastReturnWeight = optional($workerData->last())->return_weight;
+              $workerTotalIssueWeight = 0;
+              $workerTotalReturnWeight = 0;
+              $workerTotalRequiredWeight = 0;
               @endphp
 
               @foreach($data as $key=>$da)
@@ -180,22 +184,26 @@ use App\Models\Process;
                   <td>{{$p}}</td>
                   <td>{{ $da->dimonds->dimond_name }}</td>
                   <td>{{ $da->dimonds_barcode }}</td>
+                  <td>{{ optional($getdimond->parties)->fname ?? '-' }}</td>
                   <td>{{ \Carbon\Carbon::parse($da->issue_date)->format('d-m-Y') }}</td>
                   <td>{{ \Carbon\Carbon::parse($da->return_date)->format('d-m-Y') }}</td>
+                  <td>{{ $da->issue_weight }}</td>
+                  <td>{{ isset($lastReturnWeight) ? $lastReturnWeight : '' }}</td>
+                  <td>{{ $getdimond->required_weight }}</td>
+                  <td>{{ $da->price }}</td>
                   <td>{{ $getdimond->shape }}</td>
                   <td>{{$getdimond->clarity}}</td>
                   <td>{{$getdimond->color}}</td>
                   <td>{{$getdimond->cut}}</td>
                   <td>{{$getdimond->polish}}</td>
                   <td>{{$getdimond->symmetry}}</td>
-                  <td>{{ $da->issue_weight }}</td>
-                  <td>{{ isset($lastReturnWeight) ? $lastReturnWeight : '' }}</td>
-                  <td>{{ $getdimond->required_weight }}</td>
-                  <td>{{ $da->price }}</td>
                   <td>{{ \Carbon\Carbon::parse($getdimond->created_at)->format('d-m-Y')}}</td>
                   <td>{{ \Carbon\Carbon::parse($getdimond->delevery_date)->format('d-m-Y') }}</td>
                   @php
                   $p += 1;
+                  $workerTotalIssueWeight += floatval($da->issue_weight ?: 0);
+                  $workerTotalReturnWeight += floatval($lastReturnWeight ?: 0);
+                  $workerTotalRequiredWeight += floatval($getdimond->required_weight ?: 0);
                   @endphp
                 </tr>
               <?php } elseif ($category == "Outter" && !in_array($da->dimonds_barcode, $dimondsBarcodeArray)) {
@@ -205,22 +213,26 @@ use App\Models\Process;
                   <td>{{$p}}</td>
                   <td>{{ $da->dimonds->dimond_name }}</td>
                   <td>{{ $da->dimonds_barcode }}</td>
+                  <td>{{ optional($getdimond->parties)->fname ?? '-' }}</td>
                   <td>{{ \Carbon\Carbon::parse($da->issue_date)->format('d-m-Y') }}</td>
                   <td>{{ \Carbon\Carbon::parse($da->return_date)->format('d-m-Y') }}</td>
+                  <td>{{ $da->issue_weight }}</td>
+                  <td>{{ isset($lastReturnWeight) ? $lastReturnWeight : '' }}</td>
+                  <td>{{ $getdimond->required_weight }}</td>
+                  <td>{{ $da->price }}</td>
                   <td>{{ $getdimond->shape }}</td>
                   <td>{{$getdimond->clarity}}</td>
                   <td>{{$getdimond->color}}</td>
                   <td>{{$getdimond->cut}}</td>
                   <td>{{$getdimond->polish}}</td>
                   <td>{{$getdimond->symmetry}}</td>
-                  <td>{{ $da->issue_weight }}</td>
-                  <td>{{ isset($lastReturnWeight) ? $lastReturnWeight : '' }}</td>
-                  <td>{{ $getdimond->required_weight }}</td>
-                  <td>{{ $da->price }}</td>
                   <td>{{ \Carbon\Carbon::parse($getdimond->created_at)->format('d-m-Y')}}</td>
                   <td>{{ \Carbon\Carbon::parse($getdimond->delevery_date)->format('d-m-Y') }}</td>
                   @php
                   $p += 1;
+                  $workerTotalIssueWeight += floatval($da->issue_weight ?: 0);
+                  $workerTotalReturnWeight += floatval($lastReturnWeight ?: 0);
+                  $workerTotalRequiredWeight += floatval($getdimond->required_weight ?: 0);
                   @endphp
                 </tr>
                 <?php } else {
@@ -229,28 +241,39 @@ use App\Models\Process;
                     <td>{{$p}}</td>
                     <td>{{ $da->dimonds->dimond_name }}</td>
                     <td>{{ $da->dimonds_barcode }}</td>
+                    <td>{{ optional($getdimond->parties)->fname ?? '-' }}</td>
                     <td>{{ \Carbon\Carbon::parse($da->issue_date)->format('d-m-Y') }}</td>
                     <td>{{ \Carbon\Carbon::parse($da->return_date)->format('d-m-Y') }}</td>
+                    <td>{{ $da->issue_weight }}</td>
+                    <td>{{ isset($lastReturnWeight) ? $lastReturnWeight : '' }}</td>
+                    <td>{{ $getdimond->required_weight }}</td>
+                    <td>{{ $da->price }}</td>
                     <td>{{ $getdimond->shape }}</td>
                     <td>{{$getdimond->clarity}}</td>
                     <td>{{$getdimond->color}}</td>
                     <td>{{$getdimond->cut}}</td>
                     <td>{{$getdimond->polish}}</td>
                     <td>{{$getdimond->symmetry}}</td>
-                    <td>{{ $da->issue_weight }}</td>
-                    <td>{{ isset($lastReturnWeight) ? $lastReturnWeight : '' }}</td>
-                    <td>{{ $getdimond->required_weight }}</td>
-                    <td>{{ $da->price }}</td>
                     <td>{{ \Carbon\Carbon::parse($getdimond->created_at)->format('d-m-Y')}}</td>
                     <td>{{ \Carbon\Carbon::parse($getdimond->delevery_date)->format('d-m-Y') }}</td>
                     @php
                     $p += 1;
+                    $workerTotalIssueWeight += floatval($da->issue_weight ?: 0);
+                    $workerTotalReturnWeight += floatval($lastReturnWeight ?: 0);
+                    $workerTotalRequiredWeight += floatval($getdimond->required_weight ?: 0);
                     @endphp
                   </tr>
               <?php }
               } ?>
               @endif
               @endforeach
+              <tr style="font-weight:bold;">
+                <td colspan="6">Total</td>
+                <td>{{ number_format($workerTotalIssueWeight, 3) }}</td>
+                <td>{{ number_format($workerTotalReturnWeight, 3) }}</td>
+                <td>{{ number_format($workerTotalRequiredWeight, 3) }}</td>
+                <td colspan="9"></td>
+              </tr>
             </tbody>
           </table>
         </div>
